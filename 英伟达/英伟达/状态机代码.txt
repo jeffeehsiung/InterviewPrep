@@ -1,0 +1,90 @@
+module（clk，rst，in，out）
+input wire clk，rst，in；
+output reg out；
+reg[2:0] CS,NS;
+
+parameter 
+S0=3'b000,
+S1=3'b001,
+S2=3'b011,
+S3=3'b010,
+S4=3'b110;
+
+always@(posedge clk or negsedge rst)
+if(!rst==1)
+begin
+CS<=S0;
+NS<=S0;
+end
+else
+begin
+CS<=NS;
+end
+
+always@(*)
+beign
+case(CS)
+
+S0:begin
+   if(in==0)
+   NS=S0;
+   else
+   NS=S1;  
+   end
+
+S1:begin
+   if(in==1)
+   NS=S1;
+   else
+   NS=S2;  
+   end
+
+S2:begin
+   if(in==0)
+   NS=S0;
+   else
+   NS=S3;  
+   end
+
+S3:begin
+   if(in==0)
+   NS=S2;
+   else
+   NS=S4;  
+   end
+   
+S4:begin
+   if(in==1)
+   NS=S1;
+   else
+   NS=S2;  
+   end
+default:NS=S0;
+endcase
+end
+
+always@(posedge clk or negsedge rst)
+begin
+case(NS)
+S0:begin
+   out<=1'b0;
+   end
+
+S1:begin
+   out<=1'b0;
+   end   
+
+S2:begin
+   out<=1'b0;
+   end
+ 
+S3:begin
+   out<=1'b0;
+   end 
+
+S4:begin
+   out<=1'b1;
+   end
+default:out<=1'b0;
+endcase
+end
