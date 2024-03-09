@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "stack": "cpp",
+        "__config": "cpp",
+        "queue": "cpp",
+        "typeinfo": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "locale": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "variant": "cpp",
+        "vector": "cpp",
+        "__availability": "cpp",
+        "iostream": "cpp"
+    }
+}

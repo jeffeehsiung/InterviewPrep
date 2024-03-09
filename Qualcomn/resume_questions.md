@@ -1,60 +1,83 @@
 <!-- possible phone screen questions -->
 ## Phone Screen Questions
 ### XR Perception R&D position
-1. Can you discuss your experience in computer vision and machine learning algorithms, specifically in the context of real-time and immersive systems such as SLAM, 3D pose tracking, and 3D scene understanding?
-- computer vision:
-    - LiDAR and Camera-based perception data pre-processing: point cloud processing, image processing, and sensor fusion
-        - preprocessing: filtering, segmentation, feature extraction, and registration
-        - filtering techniques: voxel grid, statistical outlier removal, passthrough, and radius outlier removal
-        - segmentation: Euclidean clustering, region growing, and DBSCAN
-        - feature extraction: normal estimation, FPFH, and SHOT
-        - registration: ICP, GICP, and NDT
-    - Object detection and tracking: 2D/3D object detection, tracking, and re-identification
-        - 2D object detection: YOLO, SSD, and Faster R-CNN
-        - 3D object detection: PointRCNN, PointNet
-        - object tracking: SORT, DeepSORT, and Tracktor
-        - multi-object tracking: DeepMOT, JDE, and FairMOT
-        - Kalman Filter
-    - SLAM (Simultaneous Localization and Mapping)
-        - feature-based SLAM: ORB-SLAM, LSD-SLAM, and SVO
-        - direct methods: DTAM, DSO, and LSD-SLAM
-        - visual-inertial SLAM: VINS-Mono, OKVIS, and ROVIO
-        - LiDAR-based SLAM: LOAM, LeGO-LOAM, and LIO-SAM
-    
-    - 3D pose tracking
-    - 3D scene understanding
+Based on the job description for a position in the Engineering Group, specifically within Systems Engineering at Qualcomm Semiconductor Limited, focusing on XR (Augmented Reality and Virtual Reality) Perception R&D, the interview questions are likely to cover a broad range of topics. These questions will not only assess the candidate's technical skills and experience but also their ability to contribute to Qualcomm's objectives in AR and VR technologies. Here are some of the most common interview questions that might be asked:
+
+1. **Technical Expertise in Computer Vision and Machine Learning**
+   - Can you explain the principles of SLAM (Simultaneous Localization and Mapping) and how it applies to AR/VR technologies?
+   - How have you contributed to the development of efficient and accurate computer vision and machine learning solutions for XR perception tasks in your previous roles?
+   - Elaborate on your understanding of 3D computer vision methods and mathematics, covering areas like SLAM, 3D reconstruction, object detection, and sensor fusion.
+   - Describe your experience with 3D pose tracking and scene understanding. How have you applied these in a project?
+   - What challenges have you encountered while working on object detection and segmentation for real-time systems, and how did you overcome them?
+   - Describe a project where you applied your knowledge of mathematical optimization to enhance the performance of XR perception systems.
+   - How do you approach sensor fusion in XR systems, and what mathematical optimization techniques do you find most effective?
+
+2. **Programming and Software Development Skills**
+   - What experience do you have with Python and C++ programming in the context of XR applications?
+   - Describe a project where you developed computer vision or machine learning solutions for embedded or mobile platforms. What were the key challenges and your solutions?
+   - How have you implemented deep neural networks for edge devices? Can you discuss your experience with model optimization techniques like quantization and pruning?
+
+3. **Understanding and Analyzing Requirements**
+   - How do you approach requirement analysis for XR perception systems? Can you give an example of how you translated requirements into a successful project outcome?
+    -   UML diagrams
+    -   Agile framework
+
+    - How do you approach understanding and analyzing requirements for perception systems in the context of XR platforms?
+    - In your experience, how important is cross-functional collaboration in developing XR technologies? Can you share an instance where collaboration significantly impacted a project?
+
+4. **Practical Experience and Problem-Solving**
+   - Share an example of a complex problem you solved in the domain of XR perception. What was your thought process, and what solutions did you implement?
+   - Given a scenario where you must optimize an XR application for better performance on mobile platforms, what steps would you take to analyze and improve it?
+
+5. **Industry Experience and Future Vision**
+   - With your background in AR/VR, where do you see the future of mobile perception technology heading?
+    -    vision for the future of XR, mentioning emerging technologies or trends you believe will be significant.
+   - How do you stay updated with the latest advancements in computer vision, machine learning, and XR technologies? Can you discuss a recent breakthrough that excited you?
+    -   Neural Radiance Fields
+
+6. **Behavioral and Teamwork**
+   - Can you describe a situation where you had to work under a tight deadline or significant pressure? How did you manage your tasks and team dynamics?
+    -    Provide an example of a high-pressure situation, focusing on your time management, prioritization, and teamwork strategies to meet the deadline.
+   - Qualcomm values innovation and teamwork. Can you share an experience where you contributed to a team project that pushed the boundaries of what was previously thought possible in XR?
+    -    Discuss a project where you collaborated with a team to achieve a significant breakthrough or innovation in XR technologies.
+
+7. **Preferred Qualifications Specifics**
+   - Have you worked on testing and debugging XR devices or mobile platforms? What tools and processes do you use for effective debugging?
+    -   GDB
+    -   Valgrind
+
+    -   Cost functions
+    -   Loss curves
+    -   ROC curves
+    -   F1 score
+    -   Confusion matrices
+    -   Precision and recall
+    -   Residuals
+
+   - Discuss your experience with deploying machine learning models on edge devices, especially in the context of XR. How do you ensure the balance between performance and accuracy?
   
-2. How have you contributed to the development of efficient and accurate computer vision and machine learning solutions for XR perception tasks in your previous roles?
+8. Can you provide examples of collaborating across functional boundaries to define architecture, APIs, and design for XR perception solutions?
 
-3. Describe a project where you applied your knowledge of mathematical optimization to enhance the performance of XR perception systems.
+9. Share your experience with software development, testing, and debugging on XR devices, mobile platforms, or other embedded systems.
 
-4. How do you approach understanding and analyzing requirements for perception systems in the context of XR platforms?
+10. Discuss your proficiency in Python and/or C++ programming, and how you have utilized these languages in the deployment of deep neural networks and model optimization on edge devices.
 
-5. Can you provide examples of collaborating across functional boundaries to define architecture, APIs, and design for XR perception solutions?
+11. Have you worked with Augmented/Virtual Reality devices and applications, and if so, can you detail your contributions and achievements in those projects?
 
-6. Share your experience with software development, testing, and debugging on XR devices, mobile platforms, or other embedded systems.
+12. Explain your experience using machine learning toolboxes such as PyTorch or TensorFlow, especially in the context of XR perception tasks.
 
-7. Discuss your proficiency in Python and/or C++ programming, and how you have utilized these languages in the deployment of deep neural networks and model optimization on edge devices.
+13. Reflect on a situation where you faced challenges in deploying deep neural networks on edge devices and how you overcame them.
 
-8. Elaborate on your understanding of 3D computer vision methods and mathematics, covering areas like SLAM, 3D reconstruction, object detection, and sensor fusion.
+15. What were the major failures you encountered in the LiDAR and camera modules? How did you identify the root causes and resolve them?
 
-9. Have you worked with Augmented/Virtual Reality devices and applications, and if so, can you detail your contributions and achievements in those projects?
+16. Can you explain your role and contributions in the SRIR Dataset and Partial Optimal Transport Interpolation for Dynamic Binaural Auralization project? How did you synthesize the SRIR model and achieve an interaural cross-correlation of 52%?
 
-10. Explain your experience using machine learning toolboxes such as PyTorch or TensorFlow, especially in the context of XR perception tasks.
-
-11. Reflect on a situation where you faced challenges in deploying deep neural networks on edge devices and how you overcame them.
-
-12. How do you stay updated on the latest advancements in XR technologies, computer vision, and machine learning relevant to this role?
-
-
-13. Can you tell us more about your experience as a System Program Manager at Foxconn iPad R&D Hardware Department? How did you improve the nano-LiDAR yield and manage multiple programs simultaneously?
-
-14. What were the major failures you encountered in the LiDAR and camera modules? How did you identify the root causes and resolve them?
-15. Can you explain your role and contributions in the SRIR Dataset and Partial Optimal Transport Interpolation for Dynamic Binaural Auralization project? How did you synthesize the SRIR model and achieve an interaural cross-correlation of 52%?
 16. As a Master Thesis Student in Deep Learning 3-D Multistatic ISAR for Person Identification, what was your research objective and how did you develop the M-InISAR pipeline for non-cooperative target 3D reconstruction? Can you explain the role of PointNet++ and LSTM models in person identification?
 17. Tell us more about your experience developing the Pixel War Game. How did you design the architecture for scalability and implement features like multiplayer, auto-play, A* pathfinding, and animation?
 18. In your Bachelor Thesis on the Baby Monitoring and Cry-Detection System, how did you prototype the cry detection model using an ESP32 microcontroller? Can you explain the signal processing techniques you used and the accuracy achieved?
+
 19. Can you elaborate on your work in Pet Facial Expression Recognition for Enhanced XR Human-Pet Interactions? How did you design and compare the fully-connected baseline model and the advanced CNN model? What were the key findings and performance metrics?
+
 20. How do you prioritize and manage multiple projects or tasks simultaneously? Can you provide an example from your experience?
 21. Can you describe a challenging situation you faced during your work or studies and how you overcame it?
 22. How do you stay updated with the latest advancements and trends in your field? Can you provide examples of how you have applied new knowledge or technologies in your work?
