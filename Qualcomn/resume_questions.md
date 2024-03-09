@@ -4,9 +4,63 @@
 Based on the job description for a position in the Engineering Group, specifically within Systems Engineering at Qualcomm Semiconductor Limited, focusing on XR (Augmented Reality and Virtual Reality) Perception R&D, the interview questions are likely to cover a broad range of topics. These questions will not only assess the candidate's technical skills and experience but also their ability to contribute to Qualcomm's objectives in AR and VR technologies. Here are some of the most common interview questions that might be asked:
 
 1. **Technical Expertise in Computer Vision and Machine Learning**
+   - Can you explain the principles of Computer Vision?
+   Computer Vision: https://en.wikipedia.org/wiki/Computer_vision
+
+   #### Image Pre-processing
+   - **Resampling** methods such as bilinear, bicubic, and nearest neighbor interpolation adjust the resolution of images, useful for resizing images or changing their resolution for analysis consistency.
+      - **重采样**：包括双线性插值、双三次插值、最近邻插值等方法，用于调整图像的分辨率，适用于改变图像大小或分辨率以保持分析的一致性。
+  
+   - **Normalization** techniques like min-max and z-score normalization standardize the range of pixel values, which is critical for machine learning models to perform optimally.
+      - **归一化**：如最小-最大归一化和Z分数归一化等技术，用于标准化像素值的范围，对于机器学习模型的优化性能至关重要。
+   
+   - **Color Space Conversion** transforms images from one color representation to another, like RGB to grayscale or RGB to HSV. This is often done to simplify the analysis or to extract specific features from images.
+      - **色彩空间转换**：将图像从一种色彩表示转换到另一种，例如RGB到灰度或RGB到HSV，通常是为了简化分析或从图像中提取特定特征。
+  
+   - **Filtering** is applied to remove noise, smooth images, or sharpen image features. Common filters include:
+   - **Gaussian Filter** for smoothing to reduce image noise and detail.
+   - **Median Filter** for noise reduction, particularly useful in removing 'salt and pepper' noise.
+   - **Mean Filter** for basic smoothing by averaging the pixels within a neighborhood.
+
+      - **滤波**：应用于去除噪声、平滑图像或锐化图像特征。常用滤波器包括：
+      - **高斯滤波**：用于减少图像噪声和细节。
+      - **中值滤波**：特别适用于去除“盐和胡椒”噪声。
+      - **均值滤波**：通过对邻域内的像素进行平均来基本平滑图像。
+
+   - **Contrast Enhancement** techniques like histogram equalization and adaptive histogram equalization improve the visibility of features in an image by adjusting the image's contrast.
+      - **对比度增强**：技术如直方图均衡化和自适应直方图均衡化通过调整图像的对比度来改善图像中特征的可见性。
+
+   #### Feature Extraction
+   - Detecting **lines, edges, and ridges** using methods like Canny edge detection and the Hough transform. These features are critical for understanding the structure within images.
+      - 使用如Canny边缘检测和霍夫变换等方法检测**线条、边缘和脊线**。这些特征对理解图像内的结构至关重要。
+   - Identifying **corners and keypoints** with algorithms such as Harris corner detection, SIFT (Scale-Invariant Feature Transform), SURF (Speeded Up Robust Features), and ORB (Oriented FAST and Rotated BRIEF). These features are essential for tasks like image matching, object detection, and tracking.
+      - 通过Harris角点检测、SIFT（尺度不变特征变换）、SURF（加速稳健特征）和ORB（定向快速旋转简明）等算法识别**角点和关键点**。这些特征对于图像匹配、物体检测和跟踪等任务至关重要。
+   - **Texture and shape descriptors** like LBP (Local Binary Patterns) and HOG (Histogram of Oriented Gradients) are used to capture and represent the texture and shape characteristics of objects in images.
+      - LBP（局部二值模式）和HOG（方向梯度直方图）等**纹理和形状描述符**用于捕捉和表示图像中物体的纹理和形状特征。
+   
+
+   #### Detection and Segmentation
+   - **Selecting interest points** involves methods like NMS (Non-Maximum Suppression) and RANSAC (Random Sample Consensus) to identify and refine the selection of key features or points in an image.
+      - **选择兴趣点**：涉及如NMS（非极大抑制）和RANSAC（随机样本一致性）等方法，用于识别和细化图像中的关键特征或点。
+   - **Segmentation** divides images into parts or regions based on certain criteria. Traditional methods include thresholding, region growing, and watershed algorithms. Modern machine learning approaches like FCN (Fully Convolutional Networks), U-Net, and Mask R-CNN offer advanced capabilities for segmenting images more precisely.
+      - **分割**：基于某些标准将图像分成部分或区域。传统方法包括阈值法、区域生长和分水岭算法。现代机器学习方法如FCN（全卷积网络）、U-Net和Mask R-CNN为更精确地分割图像提供了高级功能。
+
+
+   #### High-level Processing and Decision Making
+   - **Pattern Recognition and Classification**: At this stage, the system identifies patterns, objects, and scenarios within the images.
+   - **模式识别和分类**：此阶段系统识别图像中的模式、物体和场景。技术范围从传统的机器学习方法（如支持向量机SVM和决策树）到先进的深度学习模型（如卷积神经网络CNNs）。
+   - **物体检测和识别**：现代深度学习方法，如R-CNN系列（包括Fast R-CNN、Faster R-CNN）、YOLO（You Only Look Once）和SSD（单次多框检测器），极大地革新了机器检测和识别图像中物体的能力，提高了准确性和速度。
+
+   #### Kalman Filter Usage
+   测动态系统的未来状态，以最小化平方误差的均值。它在计算机视觉中广泛用于实时跟踪移动对象、导航和机器人技术。它通过结合随时间的测量来估计过程的状态，有效地处理不确定性。
+
+
+
    - Can you explain the principles of SLAM (Simultaneous Localization and Mapping) and how it applies to AR/VR technologies?
    ```
-   SLAM是一种用于构建环境地图并确定自身位置的技术。在AR/VR中，SLAM技术用于实时地图构建和定位，以便将虚拟对象与现实世界对齐。SLAM技术通常涉及传感器数据融合、特征提取和匹配、优化算法等方面。
+   SLAM: https://en.wikipedia.org/wiki/Simultaneous_localization_and_mapping
+   SLAM技术（Simultaneous Localization and Mapping）
+   是一种用于构建环境地图并确定自身位置的技术。在AR/VR中，SLAM技术用于实时地图构建和定位，以便将虚拟对象与现实世界对齐。SLAM技术通常涉及传感器数据融合、特征提取和匹配、优化算法等方面。
 
    流程通常包括：
    1. 传感器数据采集：使用相机、激光雷达、惯性测量单元（IMU）等传感器采集环境数据。
@@ -22,7 +76,7 @@ Based on the job description for a position in the Engineering Group, specifical
    
    ```
    - How have you contributed to the development of efficient and accurate computer vision and machine learning solutions for XR perception tasks in your previous roles?
-   
+
    - Elaborate on your understanding of 3D computer vision methods and mathematics, covering areas like SLAM, 3D reconstruction, object detection, and sensor fusion.
 
    - Describe your experience with 3D pose tracking and scene understanding. How have you applied these in a project?
