@@ -45,7 +45,6 @@ Based on the job description for a position in the Engineering Group, specifical
    - **Segmentation** divides images into parts or regions based on certain criteria. Traditional methods include thresholding, region growing, and watershed algorithms. Modern machine learning approaches like FCN (Fully Convolutional Networks), U-Net, and Mask R-CNN offer advanced capabilities for segmenting images more precisely.
       - **分割**：基于某些标准将图像分成部分或区域。传统方法包括阈值法、区域生长和分水岭算法。现代机器学习方法如FCN（全卷积网络）、U-Net和Mask R-CNN为更精确地分割图像提供了高级功能。
 
-
    #### High-level Processing and Decision Making
    - **Pattern Recognition and Classification**: At this stage, the system identifies patterns, objects, and scenarios within the images.
    - **模式识别和分类**：此阶段系统识别图像中的模式、物体和场景。技术范围从传统的机器学习方法（如支持向量机SVM和决策树）到先进的深度学习模型（如卷积神经网络CNNs）。
@@ -132,28 +131,3 @@ Based on the job description for a position in the Engineering Group, specifical
       -   Pruning
       -   Knowledge distillation
       -   Model compression
-
-9. Share your experience with software development, testing, and debugging on XR devices, mobile platforms, or other embedded systems.
-
-10. Discuss your proficiency in Python and/or C++ programming, and how you have utilized these languages in the deployment of deep neural networks and model optimization on edge devices.
-
-12. Explain your experience using machine learning toolboxes such as PyTorch or TensorFlow, especially in the context of XR perception tasks.
-
-13. Reflect on a situation where you faced challenges in deploying deep neural networks on edge devices and how you overcame them.
-
-16. Can you explain your role and contributions in the SRIR Dataset and Partial Optimal Transport Interpolation for Dynamic Binaural Auralization project? How did you synthesize the SRIR model and achieve an interaural cross-correlation of 52%?
-
-16. As a Master Thesis Student in Deep Learning 3-D Multistatic ISAR for Person Identification, what was your research objective and how did you develop the M-InISAR pipeline for non-cooperative target 3D reconstruction? Can you explain the role of PointNet++ and LSTM models in person identification?
-
-17. Tell us more about your experience developing the Pixel War Game. How did you design the architecture for scalability and implement features like multiplayer, auto-play, A* pathfinding, and animation?
-
-18. In your Bachelor Thesis on the Baby Monitoring and Cry-Detection System, how did you prototype the cry detection model using an ESP32 microcontroller? Can you explain the signal processing techniques you used and the accuracy achieved?
-
-19. Can you elaborate on your work in Pet Facial Expression Recognition for Enhanced XR Human-Pet Interactions? How did you design and compare the fully-connected baseline model and the advanced CNN model? What were the key findings and performance metrics?
-
-
-21. Can you describe a challenging situation you faced during your work or studies and how you overcame it?
-
-26. Can you discuss any leadership roles or experiences you have had? How did you motivate and guide your team towards achieving a common goal?
-
-27. Can you tell us about any specific technical skills or tools you have expertise in that would be relevant to the role you are applying for?
