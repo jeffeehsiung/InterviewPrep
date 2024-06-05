@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>sorting_searching_dynamic_programming.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="sort-search-recursion-and-dynamic-programming">Sort, Search, Recursion, and Dynamic Programming</h1>
+<h2 id="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%9A%84%E5%85%AB%E8%82%A1%E6%96%87%E9%80%9A%E5%B8%B8%E5%8C%85%E6%8B%AC%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E7%9A%84%E9%97%AE%E9%A2%98">数据结构和算法的八股文通常包括以下几个方面的问题：</h2>
+<ol>
+<li>
+<p>数据结构基础：包括数组、链表、栈、队列、哈希表、树（包括二叉树、二叉搜索树、平衡树、红黑树等）、图（包括有向图、无向图、权重图等）等基础知识。</p>
+</li>
+<li>
+<p>基础算法：包括排序算法（冒泡排序、选择排序、插入排序、快速排序、归并排序、堆排序等）、查找算法（二分查找、深度优先搜索、广度优先搜索等）、动态规划、贪心算法、分治算法等。</p>
+</li>
+<li>
+<p>高级数据结构和算法：包括B树、B+树、跳表、布隆过滤器、LRU缓存、一致性哈希等。</p>
+</li>
+<li>
+<p>算法设计技巧：包括递归、迭代、双指针、滑动窗口、位运算等。</p>
+</li>
+<li>
+<p>算法复杂度分析：理解并能够计算时间复杂度和空间复杂度。</p>
+</li>
+<li>
+<p>数据结构和算法的应用：如何在实际问题中选择和使用合适的数据结构和算法。</p>
+</li>
+<li>
+<p>常见的编程题：例如LeetCode、剑指Offer等上的题目，以及它们的解题思路和代码实现。</p>
+</li>
+</ol>
+<h2 id="question-1-merge-sort-on-log-n">Question 1: Merge Sort (O(n log n))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>merge sort. 归并排序（Merge sort）是一种分治算法，它是采用分治法（Divide and Conquer）的一个非常典型的应用。归并排序的思想就是先递归分解数组，再合并数组。</p>
+<ul>
+<li>
+<p>Time Complexity: O(nlogn)</p>
+</li>
+<li>
+<p>Space Complexity: O(n)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>归并排序的基本思想是：先递归分解数组，再合并数组。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>将数组分解成两个长度相等的子数组；</li>
+<li>递归分解子数组，直到子数组长度为1；</li>
+<li>将两个子数组合并成一个有序数组；</li>
+<li>重复步骤2~3。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> mid, <span class="hljs-keyword">int</span> right)</span> </span>{
+    <span class="hljs-keyword">int</span> n1 = mid - left + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">int</span> n2 = right - mid;
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">L</span><span class="hljs-params">(n1)</span></span>;
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">R</span><span class="hljs-params">(n2)</span></span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n1; i++) {
+        L[i] = nums[left + i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n2; j++) {
+        R[j] = nums[mid + <span class="hljs-number">1</span> + j];
+    }
+    <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> k = left;
+    <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) {
+        <span class="hljs-keyword">if</span> (L[i] &lt;= R[j]) {
+            nums[k] = L[i];
+            i++;
+        } <span class="hljs-keyword">else</span> {
+            nums[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    <span class="hljs-keyword">while</span> (i &lt; n1) {
+        nums[k] = L[i];
+        i++;
+        k++;
+    }
+    <span class="hljs-keyword">while</span> (j &lt; n2) {
+        nums[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>{
+    <span class="hljs-keyword">if</span> (left &lt; right) {
+        <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+        mergeSort(nums, left, mid);
+        mergeSort(nums, mid + <span class="hljs-number">1</span>, right);
+        merge(nums, left, mid, right);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    mergeSort(nums, <span class="hljs-number">0</span>, nums.size() - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-2-merge-sort-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">Question 2: Merge Sort 归并排序</h2>
+<h4 id="%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序</h4>
+<p>归并排序是一种分治算法，它将输入数组分成两半，递归地对这两半进行排序，然后将它们合并。合并操作涉及比较两半中的元素并按顺序放置它们。归并排序的时间复杂度为O(n log n)，并且是稳定的，这意味着它保留了相等元素的相对顺序。</p>
+<h4 id="c-implementation">C++ Implementation</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge_sort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;T&gt;&amp; arr)</span> </span>{
+    <span class="hljs-keyword">if</span> (arr.size() &gt; <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">size_t</span> mid = arr.size() / <span class="hljs-number">2</span>;
+        <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;T&gt; <span class="hljs-title">left_half</span><span class="hljs-params">(arr.begin(), arr.begin() + mid)</span></span>;
+        <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;T&gt; <span class="hljs-title">right_half</span><span class="hljs-params">(arr.begin() + mid, arr.end())</span></span>;
+
+        merge_sort(left_half);
+        merge_sort(right_half);
+
+        <span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">while</span> (i &lt; left_half.size() &amp;&amp; j &lt; right_half.size()) {
+            <span class="hljs-keyword">if</span> (left_half[i] &lt; right_half[j]) {
+                arr[k] = left_half[i];
+                ++i;
+            } <span class="hljs-keyword">else</span> {
+                arr[k] = right_half[j];
+                ++j;
+            }
+            ++k;
+        }
+
+        <span class="hljs-keyword">while</span> (i &lt; left_half.size()) {
+            arr[k] = left_half[i];
+            ++i;
+            ++k;
+        }
+
+        <span class="hljs-keyword">while</span> (j &lt; right_half.size()) {
+            arr[k] = right_half[j];
+            ++j;
+            ++k;
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; arr = {<span class="hljs-number">38</span>, <span class="hljs-number">27</span>, <span class="hljs-number">43</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">82</span>, <span class="hljs-number">10</span>};
+    merge_sort(arr);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; num : arr) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; num &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: 3 9 10 27 38 43 82</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+</div></code></pre>
+<h2 id="question-3-quick-sort-on-log-n">Question 3: Quick Sort (O(n log n))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>quick sort. 快速排序（Quicksort）是对冒泡排序的一种改进。快速排序由 C. A. R. Hoare 在1960年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<ul>
+<li>
+<p>Time Complexity: O(nlogn)</p>
+</li>
+<li>
+<p>Space Complexity: O(logn)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>快速排序的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>从数列中挑出一个元素，称为“基准”（pivot）；</li>
+<li>重新排序数列，所有比基准值小的元素摆放在基准前面，所有比基准值大的元素摆在基准的后面（相同的数可以到任一边）。在这个分区结束之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
+<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">partition</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> low, <span class="hljs-keyword">int</span> high)</span> </span>{
+    <span class="hljs-keyword">int</span> pivot = nums[high];
+    <span class="hljs-keyword">int</span> i = low - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = low; j &lt; high; j++) {
+        <span class="hljs-keyword">if</span> (nums[j] &lt; pivot) {
+            i++;
+            <span class="hljs-built_in">std</span>::swap(nums[i], nums[j]);
+        }
+    }
+    <span class="hljs-built_in">std</span>::swap(nums[i + <span class="hljs-number">1</span>], nums[high]);
+    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quickSort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> low, <span class="hljs-keyword">int</span> high)</span> </span>{
+    <span class="hljs-keyword">if</span> (low &lt; high) {
+        <span class="hljs-keyword">int</span> pi = partition(nums, low, high);
+        quickSort(nums, low, pi - <span class="hljs-number">1</span>);
+        quickSort(nums, pi + <span class="hljs-number">1</span>, high);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    quickSort(nums, <span class="hljs-number">0</span>, nums.size() - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-4-heap-sort-on-log-n">Question 4: Heap Sort (O(n log n))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>heap sort. 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<ul>
+<li>
+<p>Time Complexity: O(nlogn)</p>
+</li>
+<li>
+<p>Space Complexity: O(1)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>堆排序的基本思想是：利用堆这种数据结构所设计的一种排序算法。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>创建一个堆 H[0……n-1]；</li>
+<li>把堆首（最大值）和堆尾互换；</li>
+<li>把堆的尺寸缩小 1，并调用 shift_down(0)，目的是把新的数组顶端数据调整到相应位置；</li>
+<li>重复步骤2，直到堆的尺寸为 1。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapify</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arr[], <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> i)</span> </span>{
+    <span class="hljs-keyword">int</span> largest = i;
+    <span class="hljs-keyword">int</span> l = <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">int</span> r = <span class="hljs-number">2</span> * i + <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span> (l &lt; n &amp;&amp; arr[l] &gt; arr[largest]) {
+        largest = l;
+    }
+    <span class="hljs-keyword">if</span> (r &lt; n &amp;&amp; arr[r] &gt; arr[largest]) {
+        largest = r;
+    }
+    <span class="hljs-keyword">if</span> (largest != i) {
+        <span class="hljs-built_in">std</span>::swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heapSort</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arr[], <span class="hljs-keyword">int</span> n)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n / <span class="hljs-number">2</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        heapify(arr, n, i);
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-built_in">std</span>::swap(arr[<span class="hljs-number">0</span>], arr[i]);
+        heapify(arr, i, <span class="hljs-number">0</span>);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> arr[] = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    <span class="hljs-keyword">int</span> n = <span class="hljs-keyword">sizeof</span>(arr) / <span class="hljs-keyword">sizeof</span>(arr[<span class="hljs-number">0</span>]);
+    heapSort(arr, n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; arr[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-5-bubble-sort-on2">Question 5: Bubble Sort (O(n^2))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>bubble sort. 冒泡排序是一种简单的排序算法。它重复地遍历要排序的列表，一次比较两个元素，如果它们的顺序错误就把它们交换过来。遍历列表的工作是重复地进行直到没有再需要交换，也就是说该列表已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。</p>
+<ul>
+<li>
+<p>Time Complexity: O(n^2)</p>
+</li>
+<li>
+<p>Space Complexity: O(1)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>冒泡排序的基本思想是：通过对待排序序列从前向后（从下标较小的元素开始），依次比较相邻元素的值，若发现逆序则交换，使值较大的元素逐渐从前向后移动，就像水底下的气泡一样逐渐向上冒。因此称为冒泡排序。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>比较相邻的元素。如果第一个比第二个大，就交换它们两个。</li>
+<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n - i - <span class="hljs-number">1</span>; j++) {
+            <span class="hljs-keyword">if</span> (nums[j] &gt; nums[j + <span class="hljs-number">1</span>]) {
+                <span class="hljs-built_in">std</span>::swap(nums[j], nums[j + <span class="hljs-number">1</span>]);
+            }
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    bubbleSort(nums);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-6-selection-sort-on2">Question 6: Selection Sort (O(n^2))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>selection sort. 选择排序（Selection sort）是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+<ul>
+<li>
+<p>Time Complexity: O(n^2)</p>
+</li>
+<li>
+<p>Space Complexity: O(1)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>选择排序的基本思想是：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>初始状态：无序区为R[1..n]，有序区为空；</li>
+<li>第i趟排序(i=1,2,3...n-1)开始时，当前有序区和无序区分别为R[1..i-1]和R[i..n]。该趟排序从当前无序区中选出关键字最小的记录 R[k]，将它与无序区的第1个记录R[i]交换，使R[1..i]和R[i+1..n]分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区；</li>
+<li>n-1趟结束，数组有序化了。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">selectionSort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-keyword">int</span> min_index = i;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (nums[j] &lt; nums[min_index]) {
+                min_index = j;
+            }
+        }
+        <span class="hljs-built_in">std</span>::swap(nums[i], nums[min_index]);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    selectionSort(nums);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-7-insertion-sort-on2">Question 7: Insertion Sort (O(n^2))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>insertion sort. 插入排序（Insertion sort）是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<ul>
+<li>
+<p>Time Complexity: O(n^2)</p>
+</li>
+<li>
+<p>Space Complexity: O(1)</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：[5, 2, 9, 1, 5, 6]
+输出：[1, 2, 5, 5, 6, 9]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>插入排序的基本思想是：通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>从第一个元素开始，该元素可以认为已经被排序；</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描；</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置；</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；</li>
+<li>将新元素插入到该位置后；</li>
+<li>重复步骤2~5。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insertionSort</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">int</span> key = nums[i];
+        <span class="hljs-keyword">int</span> j = i - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span> &amp;&amp; nums[j] &gt; key) {
+            nums[j + <span class="hljs-number">1</span>] = nums[j];
+            j--;
+        }
+        nums[j + <span class="hljs-number">1</span>] = key;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    insertionSort(nums);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-8-fibonacci-sequence-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97-%E9%80%92%E5%BD%92">Question 8: Fibonacci Sequence (斐波那契数列) (递归)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>斐波那契数列是一个非常经典的数列，定义如下：
+[F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2)]</p>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<ol>
+<li><strong>递归方法</strong>：这是一种直观的方法，但由于会重复计算很多次同样的值，所以效率较低，时间复杂度为(O(2^n))。</li>
+<li><strong>动态规划或迭代方法</strong>：通过从底向上计算并存储已经计算过的值，避免重复计算，将时间复杂度降低到(O(n))。</li>
+</ol>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<p>In the dynamic programming approach, the table can be used to store the calculated values and avoid redundant calculations and is implemented as follows:</p>
+<p>if in C++ (consider efficency, smart pointers, STL, template, lamda function, avoid copy, move semantics, opraotr overloading, etc.):</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">fibonacci</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fib = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>};
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i) {
+        fib.push_back(fib[i - <span class="hljs-number">1</span>] + fib[i - <span class="hljs-number">2</span>]);
+    }
+    <span class="hljs-keyword">return</span> fib[n];
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> n = <span class="hljs-number">10</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Fibonacci("</span> &lt;&lt; n &lt;&lt; <span class="hljs-string">") = "</span> &lt;&lt; fibonacci(n) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-9-factorial-%E9%98%B6%E4%B9%98-%E9%80%92%E5%BD%92-%E8%BF%AD%E4%BB%A3">Question 9: Factorial 阶乘 (递归) (迭代)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>factorial 阶乘，通常用于计算排列组合的数量。阶乘的定义如下：</p>
+<ul>
+<li>0! = 1</li>
+<li>n! = n * (n - 1) * (n - 2) * ... * 1</li>
+</ul>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>阶乘的计算可以使用递归或迭代的方式。在这里，我将详细说明递归和迭代的解决思路。</p>
+<ul>
+<li>递归法解决思路
+在递归法中，我们首先定义一个递归函数 factorial，它的作用是计算 n 的阶乘。在递归函数中，我们首先判断特殊情况，如果 n 等于 0，直接返回 1。否则，我们返回 n 乘以 n - 1 的阶乘。</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">factorial</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> n * factorial(n - <span class="hljs-number">1</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> n = <span class="hljs-number">5</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; factorial(n) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-10-linear-search-%E7%BA%BF%E6%80%A7%E6%90%9C%E7%B4%A2-on">Question 10: Linear Search (线性搜索) (O(n))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>线性搜索是一种简单的搜索算法，它顺序检查数组的每个元素，直到找到匹配的值或遍历整个数组。它的时间复杂度为O(n)，适用于小型数据集或未排序的数组。该算法将每个元素与目标值进行比较，并在找到匹配时返回索引。</p>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">linear_search</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;T&gt;&amp; arr, <span class="hljs-keyword">const</span> T&amp; target)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; arr.size(); ++i) {
+        <span class="hljs-keyword">if</span> (arr[i] == target) {
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; arr = {<span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">27</span>, <span class="hljs-number">38</span>, <span class="hljs-number">43</span>, <span class="hljs-number">82</span>};
+    <span class="hljs-keyword">int</span> target = <span class="hljs-number">27</span>;
+    <span class="hljs-keyword">int</span> result = linear_search(arr, target);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; result &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: 3</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-11-binary-search-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE-olog-n">Question 11: Binary Search (二分查找) (O(log n))</h2>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>二分查找是一种分治算法，它通过反复将搜索区间划分为两半来在排序数组中搜索目标值。它的时间复杂度为O(log n)，对于大型数据集非常高效。该算法将目标值与数组的中间元素进行比较，并根据比较继续在适当的半边进行搜索。 如果数组未排序，则需要在应用二分查找之前对其进行排序 O(n log n)。</p>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">binary_search</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;T&gt;&amp; arr, <span class="hljs-keyword">const</span> T&amp; target)</span> </span>{
+    <span class="hljs-keyword">int</span> low = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> high = arr.size() - <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">while</span> (low &lt;= high) {
+        <span class="hljs-keyword">int</span> mid = (low + high) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (arr[mid] == target) {
+            <span class="hljs-keyword">return</span> mid;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[mid] &lt; target) {
+            low = mid + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            high = mid - <span class="hljs-number">1</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; arr = {<span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">27</span>, <span class="hljs-number">38</span>, <span class="hljs-number">43</span>, <span class="hljs-number">82</span>};
+    <span class="hljs-keyword">int</span> target = <span class="hljs-number">27</span>;
+    <span class="hljs-keyword">int</span> result = binary_search(arr, target);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; result &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: 3</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-12-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C-sort--binary-search">Question 12: 三数之和 (Sort + Binary Search)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>三数之和。给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。</p>
+<ul>
+<li>
+<p>注意：答案中不可以包含重复的三元组。</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<ul>
+<li>首先对数组进行排序，这样可以方便地处理重复元素，并且可以利用有序数组的性质。</li>
+<li>遍历排序后的数组，使用一个指针固定一个数，另外两个指针分别指向固定数的下一个数和数组末尾。</li>
+<li>在固定数后面的子数组中使用双指针技巧寻找另外两个数，使三数之和等于 0。</li>
+<li>如果找到符合条件的三元组，将其加入结果集中。</li>
+<li>注意处理重复元素的情况，避免重复计算。</li>
+</ul>
+<p>详细步骤</p>
+<ul>
+<li>对数组 nums 进行排序。</li>
+<li>初始化结果集 result 为空列表。</li>
+<li>遍历排序后的数组 nums：
+<ul>
+<li>初始化左指针 left 指向当前数的下一个位置，右指针 right 指向数组末尾。</li>
+<li>当 left 指针小于 right 指针时，执行以下步骤：</li>
+<li>计算当前三个数的和 sum。</li>
+<li>如果 sum == 0，将当前三个数加入结果集。</li>
+<li>如果 sum &lt; 0，说明需要增大和，将 left 指针右移一位。</li>
+<li>如果 sum &gt; 0，说明需要减小和，将 right 指针左移一位。</li>
+<li>在移动指针时，注意避免重复元素的情况。</li>
+<li>在当前数之后的子数组中使用双指针技巧：</li>
+</ul>
+</li>
+<li>举例来说，考虑输入数组 nums = [-1,0,1,2,-1,-4]：
+<ul>
+<li>排序后的数组为 [-4, -1, -1, 0, 1, 2]。</li>
+<li>遍历数组：
+<ul>
+<li>左指针指向 1，右指针指向 2，三数之和为 0 + 1 + 2 = 3，大于 0，右指针左移。
+...</li>
+<li>左指针指向 0，右指针指向 2，三数之和为 -1 + 0 + 2 = 1，大于 0，右指针左移。
+...</li>
+<li>左指针指向 -1，右指针指向 2，三数之和为 -4 + (-1) + 2 = -3，小于 0，左指针右移。</li>
+<li>左指针指向 -1，右指针指向 2，三数之和为 -4 + (-1) + 2 = -3，小于 0，左指针右移。
+...</li>
+<li>当固定数为 -4 时：</li>
+<li>当固定数为 -1 时：</li>
+<li>当固定数为 0 时：</li>
+</ul>
+</li>
+<li>遍历完成后，得到结果集 result，其中 [-1, -1, 2] 和 [-1, 0, 1] 是不重复的三元组。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">threeSum</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; result;
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-built_in">std</span>::sort(nums.begin(), nums.end());
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">int</span> left = i + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> right = n - <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">while</span> (left &lt; right) {
+            <span class="hljs-keyword">int</span> sum = nums[i] + nums[left] + nums[right];
+            <span class="hljs-keyword">if</span> (sum == <span class="hljs-number">0</span>) {
+                result.push_back({nums[i], nums[left], nums[right]});
+                <span class="hljs-keyword">while</span> (left &lt; right &amp;&amp; nums[left] == nums[left + <span class="hljs-number">1</span>]) left++;
+                <span class="hljs-keyword">while</span> (left &lt; right &amp;&amp; nums[right] == nums[right - <span class="hljs-number">1</span>]) right--;
+                left++;
+                right--;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &lt; <span class="hljs-number">0</span>) {
+                left++;
+            } <span class="hljs-keyword">else</span> {
+                right--;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-4</span>};
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; result = threeSum(nums);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; triplet : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"["</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : triplet) {
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; num &lt;&lt; <span class="hljs-string">","</span>;
+        }
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"]"</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-13-depth-first-search-ov--e">Question 13: Depth First Search (O(V + E))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Depth-First Search (DFS). 深度优先搜索（Depth-First Search）是一种用于遍历或搜索树或图的算法。沿着树的深度遍历树的节点，尽可能深的搜索树的分支。当节点 v 的所在边都己被探寻过，搜索将回溯到发现节点 v 的那条边的起始节点。这一过程一直进行到已发现从源节点可达的所有节点为止。如果还存在未被发现的节点，则选择其中一个作为源节点并重复以上过程。整个进程反复进行直到所有节点都被访问为止。</p>
+<ul>
+<li>
+<p>Time Complexity: O(V + E): where V is number of vertices and E is number of edges,</p>
+</li>
+<li>
+<p>Space Complexity: O(V): for storing the stack</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：graph = {
+    0: [1, 2],
+    1: [2],
+    2: [0, 3],
+    3: [3]
+}
+输出：[0, 1, 2, 3]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>深度优先搜索的基本思想是：沿着树的深度遍历树的节点，尽可能深的搜索树的分支。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>从源节点开始遍历，将源节点标记为已访问；</li>
+<li>对于源节点的所有邻接节点，如果未访问，则递归访问；</li>
+<li>重复步骤2，直到所有节点都被访问。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_set&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> node, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; graph, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; visited, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; result)</span> </span>{
+    visited.insert(node);te
+    result.push_back(node);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> neighbor : graph[node]) {
+        <span class="hljs-keyword">if</span> (visited.find(neighbor) == visited.end()) {
+            dfs(neighbor, graph, visited, result);
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">depthFirstSearch</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; graph)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt; visited;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [node, neighbors] : graph) {
+        <span class="hljs-keyword">if</span> (visited.find(node) == visited.end()) {
+            dfs(node, graph, visited, result);
+        }
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-number">0</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}},
+        {<span class="hljs-number">1</span>, {<span class="hljs-number">2</span>}},
+        {<span class="hljs-number">2</span>, {<span class="hljs-number">0</span>, <span class="hljs-number">3</span>}},
+        {<span class="hljs-number">3</span>, {<span class="hljs-number">3</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result = depthFirstSearch(graph);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-14-breath-first-search-ov--e">Question 14: Breath First Search (O(V + E))</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Breadth-First Search (BFS). 广度优先搜索（Breadth-First Search）是一种用于遍历或搜索树或图的算法。从根节点开始，沿着树的宽度遍历树的节点。如果所有节点都在同一层，那么就按照它们在树中出现的顺序来进行遍历。广度优先搜索的实现一般采用open-closed表。</p>
+<ul>
+<li>
+<p>Time Complexity: O(V + E): where V is number of vertices and E is number of edges,</p>
+</li>
+<li>
+<p>Space Complexity: O(V): for storing the queue</p>
+</li>
+<li>
+<p>示例：</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>输入：graph = {
+    0: [1, 2],
+    1: [2],
+    2: [0, 3],
+    3: [3]
+}
+输出：[0, 1, 2, 3]
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>广度优先搜索的基本思想是：从根节点开始，沿着树的宽度遍历树的节点。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>从源节点开始遍历，将源节点标记为已访问，并加入队列；</li>
+<li>从队列中取出一个节点，对于该节点的所有邻接节点，如果未访问，则标记为已访问，并加入队列；</li>
+<li>重复步骤2，直到队列为空。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_set&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">breadthFirstSearch</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; graph)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt; visited;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; q;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [node, neighbors] : graph) {
+        <span class="hljs-keyword">if</span> (visited.find(node) == visited.end()) {
+            q.push(node);
+            visited.insert(node);
+            <span class="hljs-keyword">while</span> (!q.empty()) {
+                <span class="hljs-keyword">int</span> curr = q.front();
+                q.pop();
+                result.push_back(curr);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> neighbor : graph[curr]) {
+                    <span class="hljs-keyword">if</span> (visited.find(neighbor) == visited.end()) {
+                        q.push(neighbor);
+                        visited.insert(neighbor);
+                    }
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-number">0</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}},
+        {<span class="hljs-number">1</span>, {<span class="hljs-number">2</span>}},
+        {<span class="hljs-number">2</span>, {<span class="hljs-number">0</span>, <span class="hljs-number">3</span>}},
+        {<span class="hljs-number">3</span>, {<span class="hljs-number">3</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result = breadthFirstSearch(graph);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-15-4-letter-matrix-search-dfsbfs">Question 15: 4 Letter Matrix Search (DFS/BFS)</h2>
+<h3 id="letter-matrix-search">Letter Matrix Search</h3>
+<p>In the task of finding the position of the first letter of a search string in a letter matrix, you can traverse the matrix and, upon finding the first matching letter, use Depth-First Search (DFS) or Breadth-First Search (BFS) to check if it's possible to sequentially find all letters of the string starting from that point.</p>
+<h3 id="letter-matrix-search">Letter Matrix Search</h3>
+<p>给定一个字母矩阵和一个搜索字符串，找到这个字符串第一个字母所在的位置的题目，可以通过遍历矩阵，并在找到第一个匹配字母后，使用深度优先搜索（DFS）或广度优先搜索（BFS）检查是否可以从该点出发按顺序找到字符串中的所有字母。</p>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<ul>
+<li>首先，我们需要遍历矩阵，找到第一个匹配的字母。</li>
+<li>然后，我们可以使用深度优先搜索（DFS）或广度优先搜索（BFS）来检查是否可以从该点出发按顺序找到字符串中的所有字母。</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&amp; word, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> k)</span> </span>{
+    <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || i &gt;= board.size() || j &lt; <span class="hljs-number">0</span> || j &gt;= board[<span class="hljs-number">0</span>].size() || board[i][j] != word[k]) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">if</span> (k == word.size() - <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">char</span> tmp = board[i][j];
+    board[i][j] = <span class="hljs-string">'/'</span>;
+    <span class="hljs-keyword">bool</span> res = dfs(board, word, i + <span class="hljs-number">1</span>, j, k + <span class="hljs-number">1</span>) || dfs(board, word, i - <span class="hljs-number">1</span>, j, k + <span class="hljs-number">1</span>) || dfs(board, word, i, j + <span class="hljs-number">1</span>, k + <span class="hljs-number">1</span>) || dfs(board, word, i, j - <span class="hljs-number">1</span>, k + <span class="hljs-number">1</span>);
+    board[i][j] = tmp;
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">exist</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; board, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> word)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; board.size(); i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; board[<span class="hljs-number">0</span>].size(); j++) {
+            <span class="hljs-keyword">if</span> (dfs(board, word, i, j, <span class="hljs-number">0</span>)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt; board = {
+        {<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>},
+        {<span class="hljs-string">'S'</span>, <span class="hljs-string">'F'</span>, <span class="hljs-string">'C'</span>, <span class="hljs-string">'S'</span>},
+        {<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>, <span class="hljs-string">'E'</span>}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> word = <span class="hljs-string">"ABCCED"</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::boolalpha &lt;&lt; exist(board, word) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-16-letter-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-depth-first-search-dfs">Question 16: Letter 深度优先搜索 Depth-First Search （DFS）</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>深度优先搜索（DFS）是一种用于遍历或搜索树或图数据结构的算法。它从根节点开始，沿着每个分支尽可能远地探索，然后回溯。DFS可以使用堆栈或递归来实现。它通常用于检测图中的循环，查找连通分量或解决具有多个解的谜题。</p>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_set&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Node&gt;
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt; <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt;&gt;&amp; graph, <span class="hljs-keyword">const</span> Node&amp; start, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt;&amp; visited)</span> </span>{
+    visited.insert(start);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; neighbor : graph.at(start)) {
+        <span class="hljs-keyword">if</span> (visited.find(neighbor) == visited.end()) {
+            dfs(graph, neighbor, visited);
+        }
+    }
+    <span class="hljs-keyword">return</span> visited;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt; graph = {
+        {<span class="hljs-string">'A'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>}},
+        {<span class="hljs-string">'B'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>}},
+        {<span class="hljs-string">'C'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'D'</span>, {<span class="hljs-string">'B'</span>}},
+        {<span class="hljs-string">'E'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'F'</span>, {<span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">char</span>&gt; visited;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">char</span>&gt; result = dfs(graph, <span class="hljs-string">'A'</span>, visited);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: A B D E F C</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<pre class="hljs"><code><div>graph = {
+    <span class="hljs-string">'A'</span>: [<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>],
+    <span class="hljs-string">'B'</span>: [<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>],
+    <span class="hljs-string">'C'</span>: [<span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>],
+    <span class="hljs-string">'D'</span>: [<span class="hljs-string">'B'</span>],
+    <span class="hljs-string">'E'</span>: [<span class="hljs-string">'B'</span>, <span class="hljs-string">'F'</span>],
+    <span class="hljs-string">'F'</span>: [<span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>]
+}
+result = dfs(graph, <span class="hljs-string">'A'</span>)
+print(result)  <span class="hljs-comment"># Output: {'A', 'B', 'C', 'D', 'E', 'F'}</span>
+</div></code></pre>
+<h2 id="question-17-letter-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2bfs">Question 17: Letter 广度优先搜索（BFS）</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>广度优先搜索（BFS）是一种用于遍历或搜索树或图数据结构的算法。它从根节点开始，探索当前深度的所有相邻节点，然后转移到下一个深度级别的节点。BFS可以使用队列来实现。它通常用于在无权图中查找最短路径，解决具有单个解的谜题或查找图的连通分量。</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bfs</span><span class="hljs-params">(graph, start)</span>:</span>
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+    <span class="hljs-keyword">while</span> queue:
+        node = queue.popleft()
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+    <span class="hljs-keyword">return</span> visited
+</div></code></pre>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_set&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Node&gt;
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt; <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt;&gt;&amp; graph, <span class="hljs-keyword">const</span> Node&amp; start)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt; visited;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">queue</span>&lt;Node&gt; <span class="hljs-built_in">queue</span>;
+    <span class="hljs-built_in">queue</span>.push(start);
+    visited.insert(start);
+    <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">queue</span>.empty()) {
+        Node node = <span class="hljs-built_in">queue</span>.front();
+        <span class="hljs-built_in">queue</span>.pop();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; neighbor : graph.at(node)) {
+            <span class="hljs-keyword">if</span> (visited.find(neighbor) == visited.end()) {
+                <span class="hljs-built_in">queue</span>.push(neighbor);
+                visited.insert(neighbor);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> visited;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt; graph = {
+        {<span class="hljs-string">'A'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>}},
+        {<span class="hljs-string">'B'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>}},
+        {<span class="hljs-string">'C'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'D'</span>, {<span class="hljs-string">'B'</span>}},
+        {<span class="hljs-string">'E'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'F'</span>, {<span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">char</span>&gt; result = bfs(graph, <span class="hljs-string">'A'</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: A B C D E F</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<pre class="hljs"><code><div>graph = {
+    <span class="hljs-string">'A'</span>: [<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>],
+    <span class="hljs-string">'B'</span>: [<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>],
+    <span class="hljs-string">'C'</span>: [<span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>],
+    <span class="hljs-string">'D'</span>: [<span class="hljs-string">'B'</span>],
+    <span class="hljs-string">'E'</span>: [<span class="hljs-string">'B'</span>, <span class="hljs-string">'F'</span>],
+    <span class="hljs-string">'F'</span>: [<span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>]
+}
+result = bfs(graph, <span class="hljs-string">'A'</span>)
+print(result)  <span class="hljs-comment"># Output: {'A', 'B', 'C', 'D', 'E', 'F'}</span>
+</div></code></pre>
+<h2 id="question-18-binary-tree--sorting--searching">Question 18: Binary Tree + Sorting + Searching</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>二叉树的递归遍历。
+二叉树的递归遍历这一个内容，一定需要好好熟练使用，不要求理解，但要求下笔如有神！
+在后面比较高阶的算法学习中，递归的思想是会不断被使用的。</p>
+<p>具体来看二叉树的三种常见的方式：</p>
+<ul>
+<li>前序遍历（pre-order）</li>
+<li>中序遍历（in-order）</li>
+<li>后序遍历（post-order）</li>
+</ul>
+<p>这三种遍历方式的原理和步骤如下：</p>
+<ul>
+<li>
+<p>前序遍历（Pre-order）：</p>
+<ul>
+<li>遍历顺序：根节点 -&gt; 左子树 -&gt; 右子树</li>
+<li>步骤：
+<ul>
+<li>访问根节点</li>
+<li>递归前序遍历左子树</li>
+<li>递归前序遍历右子树</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>中序遍历（In-order）：</p>
+<ul>
+<li>遍历顺序：左子树 -&gt; 根节点 -&gt; 右子树</li>
+<li>步骤：
+<ul>
+<li>递归中序遍历左子树</li>
+<li>访问根节点</li>
+<li>递归中序遍历右子树</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>后序遍历（Post-order）：</p>
+<ul>
+<li>遍历顺序：左子树 -&gt; 右子树 -&gt; 根节点</li>
+<li>步骤：
+<ul>
+<li>递归后序遍历左子树</li>
+<li>递归后序遍历右子树</li>
+<li>访问根节点</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="cc-%E5%AE%9E%E7%8E%B0">C/C++ 实现</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TreeNode</span> {</span>
+    <span class="hljs-keyword">int</span> data;
+    TreeNode* left;
+    TreeNode* right;
+    
+    TreeNode(<span class="hljs-keyword">int</span> val) : data(val), left(<span class="hljs-literal">nullptr</span>), right(<span class="hljs-literal">nullptr</span>) {}
+};
+
+<span class="hljs-comment">// 前序遍历</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">preOrderTraversal</span><span class="hljs-params">(TreeNode* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+    preOrderTraversal(root-&gt;left);
+    preOrderTraversal(root-&gt;right);
+}
+
+<span class="hljs-comment">// 中序遍历</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">inOrderTraversal</span><span class="hljs-params">(TreeNode* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    
+    inOrderTraversal(root-&gt;left);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+    inOrderTraversal(root-&gt;right);
+}
+
+<span class="hljs-comment">// 后序遍历</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">postOrderTraversal</span><span class="hljs-params">(TreeNode* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    
+    postOrderTraversal(root-&gt;left);
+    postOrderTraversal(root-&gt;right);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 在这里创建二叉树并进行测试</span>
+    TreeNode* root = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">1</span>);
+    root-&gt;left = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">2</span>);
+    root-&gt;right = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">3</span>);
+    root-&gt;left-&gt;left = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">4</span>);
+    root-&gt;left-&gt;right = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">5</span>);
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Pre-order traversal: "</span>;
+    preOrderTraversal(root);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"In-order traversal: "</span>;
+    inOrderTraversal(root);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Post-order traversal: "</span>;
+    postOrderTraversal(root);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-19-binary-tree-inorder-preorder-postorder-level-order-traversal">Question 19: Binary Tree, inorder, preorder, postorder, level order traversal</h2>
+<p>A binary tree is a tree data structure in which each node has at most two children, referred to as the left child and the right child. The following are common methods for traversing a binary tree:</p>
+<ul>
+<li>
+<p><strong>Inorder Traversal</strong>: In this traversal, the left subtree is visited first, followed by the root node, and then the right subtree. It is commonly used to retrieve data in sorted order from a binary search tree.</p>
+</li>
+<li>
+<p><strong>Preorder Traversal</strong>: In this traversal, the root node is visited first, followed by the left subtree, and then the right subtree. It is commonly used to create a copy of the tree.</p>
+</li>
+<li>
+<p><strong>Postorder Traversal</strong>: In this traversal, the left subtree is visited first, followed by the right subtree, and then the root node. It is commonly used to delete a tree.</p>
+</li>
+<li>
+<p><strong>Level Order Traversal</strong>: In this traversal, nodes are visited level by level, from left to right. It is commonly used to print the nodes at each level of the tree.</p>
+</li>
+</ul>
+<p>Here's an example of a binary tree and its traversals:</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Node</span> {</span>
+    <span class="hljs-keyword">int</span> data;
+    Node* left;
+    Node* right;
+    Node(<span class="hljs-keyword">int</span> value) : data(value), left(<span class="hljs-literal">nullptr</span>), right(<span class="hljs-literal">nullptr</span>) {}
+};
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">inorderTraversal</span><span class="hljs-params">(Node* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    inorderTraversal(root-&gt;left);
+    <span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+    inorderTraversal(root-&gt;right);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">preorderTraversal</span><span class="hljs-params">(Node* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+    preorderTraversal(root-&gt;left);
+    preorderTraversal(root-&gt;right);
+}`
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">postorderTraversal</span><span class="hljs-params">(Node* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    postorderTraversal(root-&gt;left);
+    postorderTraversal(root-&gt;right);
+    <span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">levelOrderTraversal</span><span class="hljs-params">(Node* root)</span> </span>{
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-built_in">queue</span>&lt;Node*&gt; q;
+    q.push(root);
+    <span class="hljs-keyword">while</span> (!q.empty()) {
+        Node* current = q.front();
+        <span class="hljs-built_in">cout</span> &lt;&lt; current-&gt;data &lt;&lt; <span class="hljs-string">" "</span>;
+        <span class="hljs-keyword">if</span> (current-&gt;left != <span class="hljs-literal">nullptr</span>) q.push(current-&gt;left);
+        <span class="hljs-keyword">if</span> (current-&gt;right != <span class="hljs-literal">nullptr</span>) q.push(current-&gt;right);
+        q.pop();
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    BinaryTree&lt;<span class="hljs-keyword">int</span>&gt; tree;
+    tree.insertNode(<span class="hljs-number">1</span>);
+    tree.insertNode(<span class="hljs-number">5</span>);
+    tree.insertNode(<span class="hljs-number">3</span>);
+    tree.insertNode(<span class="hljs-number">7</span>);
+    tree.insertNode(<span class="hljs-number">2</span>);
+    tree.insertNode(<span class="hljs-number">4</span>);
+    tree.insertNode(<span class="hljs-number">6</span>);
+    tree.insertNode(<span class="hljs-number">8</span>);
+    tree.insertNode(<span class="hljs-number">9</span>);
+    tree.insertNode(<span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// The tree looks like:</span>
+    <span class="hljs-comment">//     1</span>
+    <span class="hljs-comment">//      \</span>
+    <span class="hljs-comment">//       5</span>
+    <span class="hljs-comment">//      / \</span>
+    <span class="hljs-comment">//     3   7</span>
+    <span class="hljs-comment">//    /   / \</span>
+    <span class="hljs-comment">//   2   6   8</span>
+    <span class="hljs-comment">//    \       \</span>
+    <span class="hljs-comment">//     4       9</span>
+    <span class="hljs-comment">//              \</span>
+    <span class="hljs-comment">//               10</span>
+
+    
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Preorder Traversal: "</span>;
+    tree.preorderTraversal();
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>; <span class="hljs-comment">// Output: 1 5 3 2 4 7 6 8 9 10</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Inorder Traversal: "</span>;
+    tree.inorderTraversal();
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>; <span class="hljs-comment">// Output: 1 2 3 4 5 6 7 8 9 10</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Postorder Traversal: "</span>;
+    tree.postorderTraversal();
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>; <span class="hljs-comment">// Output: 2 4 3 6 10 9 8 7 5 1</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Level Order Traversal: "</span>;
+    tree.levelOrderTraversal(); <span class="hljs-comment">// Output: 1 5 3 7 2 4 6 8 9 10</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-20-binary-tree-%E9%9D%9E%E9%80%92%E5%BD%92%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86">Question 20: Binary Tree 非递归后序遍历</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>题目：二叉树使用非递归实现后续遍历。</p>
+<h4 id="%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF">解题思路</h4>
+<p>在二叉树的非递归后序遍历中，我们需要使用一个辅助栈来模拟递归的过程。具体来说，我们使用两个栈，一个栈用来模拟递归的过程，另一个栈用来存储遍历的结果。</p>
+<p>我们首先将根节点压入第一个栈中。然后开始循环，每次从第一个栈中弹出一个节点，然后将其压入第二个栈中。然后先将左子节点压入第一个栈中，再将右子节点压入第一个栈中。这样，我们就可以保证每次遍历的时候，都是先遍历左子树，然后遍历右子树。最后我们将第二个栈中的元素依次弹出，就可以得到后序遍历的结果。</p>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%B5%81%E7%A8%8B">解决流程：</h4>
+<p>后续遍历访问顺序是左子树 - 右子树 - 根节点。在非递归实现后续遍历时，可以借助栈来辅助实现。</p>
+<p>我将解决流程详细描述如下：</p>
+<ul>
+<li>
+<p>初始化： 首先，创建两个栈。一个主栈 stack 用于辅助遍历二叉树，另一个辅助栈 result_stack 用于记录后序遍历的结果。将根节点压入主栈。</p>
+</li>
+<li>
+<p>主循环： 进入一个循环，循环条件为主栈非空。这是为了确保遍历所有节点。</p>
+</li>
+<li>
+<p>处理当前节点： 从主栈弹出栈顶节点（当前节点），并将其值压入辅助栈 result_stack。这是为了保证后续遍历的顺序。</p>
+</li>
+<li>
+<p>处理左子节点： 如果当前节点有左子节点，将左子节点压入主栈。这样可以确保在整个遍历过程中，左子树的节点先被处理。</p>
+</li>
+<li>
+<p>处理右子节点： 如果当前节点有右子节点，将右子节点压入主栈。这保证了在处理完左子树后，右子树的节点会被遍历。</p>
+</li>
+<li>
+<p>重复： 重复步骤3至步骤5直到主栈为空。这个过程确保了所有节点都被正确处理，且按照左子树 - 右子树 - 根节点的顺序。</p>
+</li>
+<li>
+<p>得到后序遍历结果： 循环结束后，辅助栈 result_stack 中的元素顺序即为二叉树的后序遍历结果。由于是使用栈实现，最后需要将结果栈反转，使得顺序正确。</p>
+</li>
+</ul>
+<h4 id="c-%E5%AE%9E%E7%8E%B0">C++ 实现</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stack&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TreeNode</span> {</span>
+    <span class="hljs-keyword">int</span> data;
+    TreeNode* left;
+    TreeNode* right;
+    
+    TreeNode(<span class="hljs-keyword">int</span> val) : data(val), left(<span class="hljs-literal">nullptr</span>), right(<span class="hljs-literal">nullptr</span>) {}
+};
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">postOrderTraversal</span><span class="hljs-params">(TreeNode* root)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result;
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span> result;
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">stack</span>&lt;TreeNode*&gt; <span class="hljs-built_in">stack</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; result_stack;
+    <span class="hljs-built_in">stack</span>.push(root);
+
+    <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">stack</span>.empty()) {
+        TreeNode* current = <span class="hljs-built_in">stack</span>.top();
+        <span class="hljs-built_in">stack</span>.pop();
+        result_stack.push(current-&gt;data);
+
+        <span class="hljs-keyword">if</span> (current-&gt;left != <span class="hljs-literal">nullptr</span>) {
+            <span class="hljs-built_in">stack</span>.push(current-&gt;left);
+        }
+        <span class="hljs-keyword">if</span> (current-&gt;right != <span class="hljs-literal">nullptr</span>) {
+            <span class="hljs-built_in">stack</span>.push(current-&gt;right);
+        }
+    }
+
+    <span class="hljs-keyword">while</span> (!result_stack.empty()) {
+        result.push_back(result_stack.top());
+        result_stack.pop();
+    }
+
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    TreeNode* root = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">1</span>);
+    root-&gt;left = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">2</span>);
+    root-&gt;right = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">3</span>);
+    root-&gt;left-&gt;left = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">4</span>);
+    root-&gt;left-&gt;right = <span class="hljs-keyword">new</span> TreeNode(<span class="hljs-number">5</span>);
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result = postOrderTraversal(root);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; result.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; result[i] &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-21-a-search-algorithm-a%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">Question 21: A* Search Algorithm (A*搜索算法)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>A<em>搜索算法是一种启发式搜索算法，它使用启发式来引导搜索过程。它通过结合从起始节点到达当前节点的成本和从当前节点到达目标节点的估计成本来评估节点。该算法使用优先级队列根据组合成本选择下一个要扩展的节点。如果启发式是可接受的和一致的，A</em>搜索是完备的和最优的。</p>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<ul>
+<li>a graph, start node, and goal node as input.</li>
+<li>initialize open_set, came_from, g_score, and f_score data structures to keep track of nodes and their scores.</li>
+<li>while loop to iteratively select the next node to expand based on the combined cost f_score.</li>
+<li>If the goal node is reached, we reconstruct the path from the start node to the goal node and return it.</li>
+<li>If the goal node is not reached, we continue expanding nodes and updating their scores until the goal is reached or no more nodes are left to expand.</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_set&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Node&gt;
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Node&gt; <span class="hljs-title">astar_search</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Node&gt;&gt;&amp; graph, <span class="hljs-keyword">const</span> Node&amp; start, <span class="hljs-keyword">const</span> Node&amp; goal)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_set</span>&lt;Node&gt; open_set;
+    open_set.insert(start);
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, Node&gt; came_from;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-keyword">int</span>&gt; g_score;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; pair : graph) {
+        g_score[pair.first] = <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max();
+    }
+    g_score[start] = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-keyword">int</span>&gt; f_score;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; pair : graph) {
+        f_score[pair.first] = <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max();
+    }
+    f_score[start] = heuristic(start, goal);
+
+    <span class="hljs-keyword">while</span> (!open_set.empty()) {
+        Node current;
+        <span class="hljs-keyword">int</span> min_f_score = <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; node : open_set) {
+            <span class="hljs-keyword">if</span> (f_score[node] &lt; min_f_score) {
+                current = node;
+                min_f_score = f_score[node];
+            }
+        }
+        <span class="hljs-keyword">if</span> (current == goal) {
+            <span class="hljs-keyword">return</span> reconstruct_path(came_from, current);
+        }
+        open_set.erase(current);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; neighbor : graph.at(current)) {
+            <span class="hljs-keyword">int</span> tentative_g_score = g_score[current] + dist_between(current, neighbor);
+            <span class="hljs-keyword">if</span> (tentative_g_score &lt; g_score[neighbor]) {
+                came_from[neighbor] = current;
+                g_score[neighbor] = tentative_g_score;
+                f_score[neighbor] = g_score[neighbor] + heuristic(neighbor, goal);
+                <span class="hljs-keyword">if</span> (open_set.find(neighbor) == open_set.end()) {
+                    open_set.insert(neighbor);
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Node&gt;();
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt; graph = {
+        {<span class="hljs-string">'A'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>}},
+        {<span class="hljs-string">'B'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'D'</span>, <span class="hljs-string">'E'</span>}},
+        {<span class="hljs-string">'C'</span>, {<span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'D'</span>, {<span class="hljs-string">'B'</span>}},
+        {<span class="hljs-string">'E'</span>, {<span class="hljs-string">'B'</span>, <span class="hljs-string">'F'</span>}},
+        {<span class="hljs-string">'F'</span>, {<span class="hljs-string">'C'</span>, <span class="hljs-string">'E'</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt; result = astar_search(graph, <span class="hljs-string">'A'</span>, <span class="hljs-string">'F'</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: A C F</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-22-dynamic-programming-%E7%88%AC%E6%A8%93%E6%A2%AF">Question 22: Dynamic Programming 爬樓梯</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>爬樓梯問題是一個非常經典的動態規劃問題，其描述如下：</p>
+<p>假设你正在爬楼梯。需要 n 步你才能到达楼顶。每次你可以爬 1 或 2 个台阶。问有多少种不同的方法可以爬到楼顶。</p>
+<ul>
+<li>示例:
+<ul>
+<li>输入：3 输出：3 解释：有三种方法可以爬到楼顶。
+<ul>
+<li>1 步 + 1 步 + 1 步</li>
+<li>1 步 + 2 步</li>
+<li>2 步 + 1 步
+当解决爬楼梯问题时，我们可以使用动态规划（Dynamic Programming）来优化问题求解。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF">解题思路</h4>
+<ol>
+<li>定义问题</li>
+</ol>
+<p>我们要计算爬到楼梯的第 n 阶的不同方法数量。</p>
+<ol start="2">
+<li>确定状态</li>
+</ol>
+<p>引入一个数组 dp，其中 dp[i] 表示爬到第 i 阶楼梯的不同方法数量。</p>
+<ol start="3">
+<li>初始化状态</li>
+</ol>
+<p>初始化数组 dp，对于爬到第一个阶梯（dp[1]）和第二个阶梯（dp[2]）的方法数量，是已知的，因为在这两个情况下，我们只有一种方法爬到楼顶。</p>
+<ul>
+<li>dp[1] = 1</li>
+<li>dp[2] = 2</li>
+</ul>
+<ol start="4">
+<li>确定状态转移方程</li>
+</ol>
+<p>对于爬到第 i 阶楼梯的方法数量，可以通过前两个阶梯的方法数量之和得到：</p>
+<ul>
+<li>dp[i] = dp[i - 1] + dp[i - 2]</li>
+</ul>
+<p>这是因为在爬到第 i 阶楼梯时，我们可以选择从第 i-1 阶直接跨一步到达，或者从第 i-2 阶跨两步到达。</p>
+<ol start="5">
+<li>实现动态规划</li>
+</ol>
+<h4 id="c-%E5%AE%9E%E7%8E%B0">C++ 实现</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">climbStairs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;
+
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dp</span><span class="hljs-params">(n + <span class="hljs-number">1</span>)</span></span>;
+    dp[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    dp[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">3</span>; i &lt;= n; i++) {
+        dp[i] = dp[i - <span class="hljs-number">1</span>] + dp[i - <span class="hljs-number">2</span>];
+    }
+
+    <span class="hljs-keyword">return</span> dp[n];
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">climbStairs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>{
+    <span class="hljs-comment">// Base cases</span>
+    <span class="hljs-keyword">if</span> (n==<span class="hljs-number">1</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">if</span> (n ==<span class="hljs-number">2</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-comment">// double pointer array: dp[i] represents the number of ways to climd to the i-th step</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; dp
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> n = <span class="hljs-number">3</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; climbStairs(n) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<p>在这个函数中，我们首先检查特殊情况，如果 n 为1或2，直接返回1或2，因为在这两种情况下，爬楼梯的方法数量是已知的。然后，我们初始化一个数组 dp，并使用一个循环计算 dp[i] 直到 n。</p>
+<ol start="6">
+<li>示例说明</li>
+</ol>
+<p>让我们以 n = 3 为例来说明整个过程：</p>
+<ul>
+<li>初始化 dp[1] = 1 和 dp[2] = 2。</li>
+<li>对于 dp[3]，根据状态转移方程，dp[3] = dp[2] + dp[1] = 2 + 1 = 3。</li>
+<li>对于 dp[4]，同样使用状态转移方程，dp[4] = dp[3] + dp[2] = 3 + 2 = 5。</li>
+<li>以此类推，计算到 dp[n]。
+这样，我们就得到了爬楼梯问题的动态规划解决方案。这个方法避免了重复计算，提高了算法的效率。</li>
+</ul>
+<h2 id="question-23-dynamic-programming-%E6%8E%A5%E9%9B%A8%E6%B0%B4">Question 23: Dynamic Programming 接雨水</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>接雨水。给定 n 个非负整数，表示直方图的高度，每个宽度为 1 的条形块的高度可以视为一个直方图的宽度图。计算下雨之后能够装多少水。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：[0,1,0,2,1,0,1,3,2,1,2,1]
+输出：6
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>为了解决这个问题，我们可以使用动态规划或栈的方式。在这里，我将详细说明栈的解决思路。</p>
+<ul>
+<li>栈的解决思路</li>
+</ul>
+<p>我们可以使用栈来解决这个问题。具体来说，我们遍历直方图的高度，如果当前高度小于栈顶高度，我们将当前高度入栈。如果当前高度大于栈顶高度，我们将栈顶高度出栈，直到当前高度小于或等于栈顶高度。在出栈的过程中，我们可以计算当前高度和栈顶高度之间的水的容量。最后，我们将当前高度入栈，继续遍历直方图的高度。</p>
+<ul>
+<li>动态规划解法</li>
+</ul>
+<p>我们可以使用动态规划来解决这个问题。具体来说，我们可以预先计算每个位置左边的最大高度和右边的最大高度。然后，我们可以遍历每个位置，计算当前位置的水的容量。具体来说，我们可以使用下面的公式计算当前位置的水的容量：</p>
+<ul>
+<li>min(left_max[i], right_max[i]) - height[i]</li>
+</ul>
+<p>这里，left_max[i] 表示位置 i 左边的最大高度，right_max[i] 表示位置 i 右边的最大高度，height[i] 表示位置 i 的高度。</p>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stack&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">trap</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; height)</span> </span>{
+    <span class="hljs-keyword">int</span> n = height.size();
+    <span class="hljs-keyword">int</span> result = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-built_in">stack</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">stack</span>.empty() &amp;&amp; height[i] &gt; height[<span class="hljs-built_in">stack</span>.top()]) {
+            <span class="hljs-keyword">int</span> top = <span class="hljs-built_in">stack</span>.top();
+            <span class="hljs-built_in">stack</span>.pop();
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">stack</span>.empty()) <span class="hljs-keyword">break</span>;
+
+            <span class="hljs-keyword">int</span> distance = i - <span class="hljs-built_in">stack</span>.top() - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> bounded_height = <span class="hljs-built_in">std</span>::min(height[i], height[<span class="hljs-built_in">stack</span>.top()]) - height[top];
+            result += distance * bounded_height;
+        }
+        <span class="hljs-built_in">stack</span>.push(i);
+    }
+
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; height = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>};
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; trap(height) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-24-dynamic-programming-%E6%9C%80%E5%A4%A7%E9%80%A3%E7%BA%8C%E5%AD%90%E6%95%B8%E7%B5%84">Question 24: Dynamic Programming (最大連續子數組)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Dynamic Programming. 动态规划（Dynamic Programming）是一种在数学、计算机科学和经济学中使用的，通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法。动态规划常常适用于有重叠子问题和最优子结构性质的问题，动态规划方法所耗时间往往远少于朴素解法。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：[1, 2, 3, 4, 5]
+输出：15
+解释：连续子数组 [1, 2, 3, 4, 5] 的和最大，为 15。
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>动态规划的基本思想是：通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>定义子问题；</li>
+<li>实现子问题的递归；</li>
+<li>识别并求解出递归方程；</li>
+<li>将递归方程转换为迭代方程；</li>
+<li>应用迭代方程解决问题。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-keyword">int</span> max_sum = nums[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">int</span> curr_sum = nums[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        curr_sum = <span class="hljs-built_in">std</span>::max(nums[i], curr_sum + nums[i]);
+        max_sum = <span class="hljs-built_in">std</span>::max(max_sum, curr_sum);
+    }
+    <span class="hljs-keyword">return</span> max_sum;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; nums = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; maxSubArray(nums) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-25-greedy-algorithm-maximize-profit">Question 25: Greedy Algorithm (Maximize Profit)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Greedy Algorithm. 贪心算法（Greedy Algorithm）是指在每一步选择中都采取在当前状态下最好或最优（即最有利）的选择，从而希望导致结果是全局最好或最优的算法。贪心算法在有最优子结构的问题中尤为有效。最优子结构的意思是局部最优解能决定全局最优解。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：[7, 1, 5, 3, 6, 4]
+输出：7
+解釋：在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出，利润 = 5-1 = 4 。
+     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，利润 = 6-3 = 3 。
+
+    总利润 = 4 + 3 = 7。
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>贪心算法的基本思想是：在每一步选择中都采取在当前状态下最好或最优的选择。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>定义问题的解；</li>
+<li>证明问题的最优子结构；</li>
+<li>设计一个递归算法；</li>
+<li>证明算法的正确性；</li>
+<li>设计一个迭代算法；</li>
+<li>证明算法的正确性。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; prices)</span> </span>{
+    <span class="hljs-keyword">int</span> max_profit = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; prices.size(); i++) {
+        <span class="hljs-keyword">if</span> (prices[i] &gt; prices[i - <span class="hljs-number">1</span>]) {
+            max_profit += prices[i] - prices[i - <span class="hljs-number">1</span>];
+        }
+    }
+    <span class="hljs-keyword">return</span> max_profit;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; prices = {<span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">4</span>};
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; maxProfit(prices) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-26-greedy-algorithm---dijkstras-shortest-path">Question 26: Greedy Algorithm - Dijkstra's shortest path</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Greedy Algorithm - Dijkstra's shortest path algorithm. Dijkstra's algorithm 是一种用于计算图中的最短路径的算法。它是由荷兰计算机科学家 Edsger W. Dijkstra 在1956 年提出的。该算法的目标是找到从源节点到图中所有其他节点的最短路径。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：graph = {
+    0: {1: 4, 2: 1},
+    1: {3: 1},
+    2: {1: 2, 3: 5},
+    3: {}
+}
+输出：[0, 3, 1, 2] (最短路径) 和 [0, 1, 2, 3] (最短距离) 
+如何得出結果：从节点 0 到节点 3 的最短路径是 0 -&gt; 2 -&gt; 1 -&gt; 3，距离为 8。
+
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>Dijkstra's algorithm 的基本思想是：找到从源节点到图中所有其他节点的最短路径。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>初始化距离数组，将源节点的距离设为 0，其他节点的距离设为无穷大；</li>
+<li>初始化优先队列，将源节点加入队列；</li>
+<li>从优先队列中取出一个节点，对于该节点的所有邻接节点，如果新的距离小于原来的距离，则更新距离，并将节点加入队列；</li>
+<li>重复步骤3，直到队列为空。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;limits&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dijkstra</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&amp; graph, <span class="hljs-keyword">int</span> source)</span> </span>{
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dist</span><span class="hljs-params">(graph.size(), <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max())</span></span>;
+    dist[source] = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::priority_queue&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;, <span class="hljs-built_in">std</span>::greater&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; pq;
+    pq.push({<span class="hljs-number">0</span>, source});
+    <span class="hljs-keyword">while</span> (!pq.empty()) {
+        <span class="hljs-keyword">int</span> u = pq.top().second;
+        pq.pop();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [v, weight] : graph[u]) {
+            <span class="hljs-keyword">if</span> (dist[v] &gt; dist[u] + weight) {
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dist;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-number">0</span>, {{<span class="hljs-number">1</span>, <span class="hljs-number">4</span>}, {<span class="hljs-number">2</span>, <span class="hljs-number">1</span>}}},
+        {<span class="hljs-number">1</span>, {{<span class="hljs-number">3</span>, <span class="hljs-number">1</span>}}},
+        {<span class="hljs-number">2</span>, {{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}, {<span class="hljs-number">3</span>, <span class="hljs-number">5</span>}}},
+        {<span class="hljs-number">3</span>, {}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; dist = dijkstra(graph, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> d : dist) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; d &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-27-greedy-algorithm--dijkstras-algorithm-v2-dijkstra%E7%AE%97%E6%B3%95">Question 27: Greedy Algorithm- Dijkstra's Algorithm V2 (Dijkstra算法)</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Dijkstra算法是一种最短路径算法，它在加权图中找到从起始节点到所有其他节点的最短路径。它使用优先级队列根据从起始节点到当前节点的最短距离选择下一个要访问的节点。Dijkstra算法对于非负边权是完备和最优的，并且可以用于在道路网络、计算机网络或其他加权图中找到最短路径。</p>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<ul>
+<li>define a dijkstra function: take a graph and a start node as input.</li>
+<li>initialize distances to keep track of the shortest distance from the start node to each node and a priority queue queue to store nodes to be visited.</li>
+<li>while loop to iteratively visit nodes in the queue and update their distances if a shorter path is found.</li>
+<li>return the distances after the entire graph has been traversed.</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Node&gt;
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dijkstra</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-keyword">int</span>&gt;&gt;&amp; graph, <span class="hljs-keyword">const</span> Node&amp; start)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;Node, <span class="hljs-keyword">int</span>&gt; distances;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; pair : graph) {
+        distances[pair.first] = <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max();
+    }
+    distances[start] = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::priority_queue&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, Node&gt;, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, Node&gt;&gt;, <span class="hljs-built_in">std</span>::greater&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, Node&gt;&gt;&gt; <span class="hljs-built_in">queue</span>;
+    <span class="hljs-built_in">queue</span>.push(<span class="hljs-built_in">std</span>::make_pair(<span class="hljs-number">0</span>, start));
+    <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">queue</span>.empty()) {
+        <span class="hljs-keyword">int</span> current_distance = <span class="hljs-built_in">queue</span>.top().first;
+        Node current_node = <span class="hljs-built_in">queue</span>.top().second;
+        <span class="hljs-built_in">queue</span>.pop();
+        <span class="hljs-keyword">if</span> (current_distance &gt; distances[current_node]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; pair : graph.at(current_node)) {
+            Node neighbor = pair.first;
+            <span class="hljs-keyword">int</span> weight = pair.second;
+            <span class="hljs-keyword">int</span> distance = current_distance + weight;
+            <span class="hljs-keyword">if</span> (distance &lt; distances[neighbor]) {
+                distances[neighbor] = distance;
+                <span class="hljs-built_in">queue</span>.push(<span class="hljs-built_in">std</span>::make_pair(distance, neighbor));
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> distances;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-string">'A'</span>, {{<span class="hljs-string">'B'</span>, <span class="hljs-number">5</span>}, {<span class="hljs-string">'C'</span>, <span class="hljs-number">3</span>}}},
+        {<span class="hljs-string">'B'</span>, {{<span class="hljs-string">'A'</span>, <span class="hljs-number">5</span>}, {<span class="hljs-string">'C'</span>, <span class="hljs-number">1</span>}, {<span class="hljs-string">'D'</span>, <span class="hljs-number">3</span>}}},
+        {<span class="hljs-string">'C'</span>, {{<span class="hljs-string">'A'</span>, <span class="hljs-number">3</span>}, {<span class="hljs-string">'B'</span>, <span class="hljs-number">1</span>}, {<span class="hljs-string">'D'</span>, <span class="hljs-number">2</span>}}},
+        {<span class="hljs-string">'D'</span>, {{<span class="hljs-string">'B'</span>, <span class="hljs-number">3</span>}, {<span class="hljs-string">'C'</span>, <span class="hljs-number">2</span>}}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; result = dijkstra(graph, <span class="hljs-string">'A'</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; pair : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; pair.first &lt;&lt; <span class="hljs-string">": "</span> &lt;&lt; pair.second &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// Output: A: 0 B: 4 C: 3 D: 5</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<pre class="hljs"><code><div>graph = {
+    <span class="hljs-string">'A'</span>: {<span class="hljs-string">'B'</span>: <span class="hljs-number">5</span>, <span class="hljs-string">'C'</span>: <span class="hljs-number">3</span>},
+    <span class="hljs-string">'B'</span>: {<span class="hljs-string">'A'</span>: <span class="hljs-number">5</span>, <span class="hljs-string">'C'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'D'</span>: <span class="hljs-number">3</span>},
+    <span class="hljs-string">'C'</span>: {<span class="hljs-string">'A'</span>: <span class="hljs-number">3</span>, <span class="hljs-string">'B'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'D'</span>: <span class="hljs-number">2</span>},
+    <span class="hljs-string">'D'</span>: {<span class="hljs-string">'B'</span>: <span class="hljs-number">3</span>, <span class="hljs-string">'C'</span>: <span class="hljs-number">2</span>}
+}
+result = dijkstra(graph, <span class="hljs-string">'A'</span>)
+print(result)  <span class="hljs-comment"># Output: {'A': 0, 'B': 4, 'C': 3, 'D': 5}</span>
+</div></code></pre>
+<h2 id="question-28-greedy-algorithm---kruskals-minimum-spanning-tree">Question 28: Greedy Algorithm - Kruskal's minimum spanning tree</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Greedy Algorithm - Kruskal's minimum spanning tree algorithm. Kruskal's algorithm 是一种用于计算图中的最小生成树的算法。最小生成树是一个图的子图，它是一个树，包含图中所有的顶点，但是只包含足够的边来保持树的连通性，并且这些边的权值之和最小。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：graph = {
+    0: {1: 4, 7: 8},
+    1: {0: 4, 7: 11, 2: 8},
+    2: {1: 8, 8: 2, 5: 4, 3: 7},
+    3: {2: 7, 5: 14, 4: 9},
+    4: {3: 9, 5: 10},
+    5: {4: 10, 3: 14, 2: 4, 6: 2},
+    6: {5: 2, 8: 6, 7: 1},
+    7: {6: 1, 8: 7, 1: 11, 0: 8},
+    8: {2: 2, 6: 6, 7: 7}
+}
+输出：[0, 1, 2, 8, 6, 5, 4, 3, 7] (最小生成树)
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>Kruskal's algorithm 的基本思想是：计算图中的最小生成树。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>初始化最小生成树；</li>
+<li>对图中的所有边按照权值进行排序；</li>
+<li>从权值最小的边开始，如果边的两个顶点不在同一个连通分量中，则将边加入最小生成树；</li>
+<li>重复步骤3，直到最小生成树中包含了图中所有的顶点。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DisjointSet</span> {</span>
+<span class="hljs-keyword">public</span>:
+    DisjointSet(<span class="hljs-keyword">int</span> n) : parent(n), rank(n, <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span> </span>{
+        <span class="hljs-keyword">if</span> (u != parent[u]) {
+            parent[u] = find(parent[u]);
+        }
+        <span class="hljs-keyword">return</span> parent[u];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> v)</span> </span>{
+        <span class="hljs-keyword">int</span> pu = find(u);
+        <span class="hljs-keyword">int</span> pv = find(v);
+        <span class="hljs-keyword">if</span> (pu != pv) {
+            <span class="hljs-keyword">if</span> (rank[pu] &gt; rank[pv]) {
+                parent[pv] = pu;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[pu] &lt; rank[pv]) {
+                parent[pu] = pv;
+            } <span class="hljs-keyword">else</span> {
+                parent[pu] = pv;
+                rank[pv]++;
+            }
+        }
+    }
+
+<span class="hljs-keyword">private</span>:
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; parent;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; rank;
+};
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">kruskal</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&amp; graph)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; edges;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [u, neighbors] : graph) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [v, weight] : neighbors) {
+            edges.push_back({weight, {u, v}});
+        }
+    }
+    <span class="hljs-built_in">std</span>::sort(edges.begin(), edges.end());
+    <span class="hljs-function">DisjointSet <span class="hljs-title">ds</span><span class="hljs-params">(graph.size())</span></span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [weight, edge] : edges) {
+        <span class="hljs-keyword">int</span> u = edge.first;
+        <span class="hljs-keyword">int</span> v = edge.second;
+        <span class="hljs-keyword">if</span> (ds.find(u) != ds.find(v)) {
+            ds.merge(u, v);
+            result.push_back(u);
+            result.push_back(v);
+        }
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-number">0</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">1</span>, {<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">2</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>}},
+        {<span class="hljs-number">3</span>, {<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">14</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>}},
+        {<span class="hljs-number">4</span>, {<span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>}},
+        {<span class="hljs-number">5</span>, {<span class="hljs-number">4</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>, <span class="hljs-number">14</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>}},
+        {<span class="hljs-number">6</span>, {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>}},
+        {<span class="hljs-number">7</span>, {<span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">11</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">8</span>, {<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result = kruskal(graph);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h2 id="question-29-greedy-algorithm---prims-minimum-spanning-tree">Question 29: Greedy Algorithm - Prim's minimum spanning tree</h2>
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4>
+<p>Greedy Algorithm - Prim's minimum spanning tree algorithm. Prim's algorithm 是一种用于计算图中的最小生成树的算法。最小生成树是一个图的子图，它是一个树，包含图中所有的顶点，但是只包含足够的边来保持树的连通性，并且这些边的权值之和最小。</p>
+<ul>
+<li>示例：</li>
+</ul>
+<pre class="hljs"><code><div>输入：graph = {
+    0: {1: 4, 7: 8},
+    1: {0: 4, 7: 11, 2: 8},
+    2: {1: 8, 8: 2, 5: 4, 3: 7},
+    3: {2: 7, 5: 14, 4: 9},
+    4: {3: 9, 5: 10},
+    5: {4: 10, 3: 14, 2: 4, 6: 2},
+    6: {5: 2, 8: 6, 7: 1},
+    7: {6: 1, 8: 7, 1: 11, 0: 8},
+    8: {2: 2, 6: 6, 7: 7}
+}
+
+输出：[0, 1, 2, 8, 6, 5, 4, 3, 7] (最小生成树)
+</div></code></pre>
+<h4 id="%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF">解决思路</h4>
+<p>Prim's algorithm 的基本思想是：计算图中的最小生成树。</p>
+<ul>
+<li>算法步骤
+<ul>
+<li>初始化最小生成树；</li>
+<li>初始化优先队列，将源节点加入队列；</li>
+<li>从优先队列中取出一个节点，对于该节点的所有邻接节点，如果新的权值小于原来的权值，则更新权值，并将节点加入队列；</li>
+<li>重复步骤3，直到最小生成树中包含了图中所有的顶点。</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-%E4%BB%A3%E7%A0%81">C++ 代码</h4>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unordered_map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;limits&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">prim</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&amp; graph)</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result;
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dist</span><span class="hljs-params">(graph.size(), <span class="hljs-built_in">std</span>::numeric_limits&lt;<span class="hljs-keyword">int</span>&gt;::max())</span></span>;
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt; <span class="hljs-title">visited</span><span class="hljs-params">(graph.size(), <span class="hljs-literal">false</span>)</span></span>;
+    <span class="hljs-built_in">std</span>::priority_queue&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;, <span class="hljs-built_in">std</span>::greater&lt;<span class="hljs-built_in">std</span>::pair&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; pq;
+    pq.push({<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    dist[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!pq.empty()) {
+        <span class="hljs-keyword">int</span> u = pq.top().second;
+        pq.pop();
+        visited[u] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; [v, weight] : graph[u]) {
+            <span class="hljs-keyword">if</span> (!visited[v] &amp;&amp; weight &lt; dist[v]) {
+                dist[v] = weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dist;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; graph = {
+        {<span class="hljs-number">0</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">1</span>, {<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">2</span>, {<span class="hljs-number">1</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>}},
+        {<span class="hljs-number">3</span>, {<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">14</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>}},
+        {<span class="hljs-number">4</span>, {<span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>}},
+        {<span class="hljs-number">5</span>, {<span class="hljs-number">4</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>, <span class="hljs-number">14</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>}},
+        {<span class="hljs-number">6</span>, {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>}},
+        {<span class="hljs-number">7</span>, {<span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">11</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>}},
+        {<span class="hljs-number">8</span>, {<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>}}
+    };
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; result = prim(graph);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : result) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; node &lt;&lt; <span class="hljs-string">" "</span>;
+    }
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+
+</body>
+</html>

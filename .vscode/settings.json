@@ -15,6 +15,7 @@
         "variant": "cpp",
         "vector": "cpp",
         "__availability": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "algorithm": "cpp"
     }
 }
