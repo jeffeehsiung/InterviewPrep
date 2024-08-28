@@ -17,5 +17,8 @@
         "__availability": "cpp",
         "iostream": "cpp",
         "algorithm": "cpp"
+    },
+    "github.copilot.enable": {
+        "cpp": true
     }
 }

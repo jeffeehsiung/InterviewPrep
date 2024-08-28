@@ -13,6 +13,13 @@ using namespace std;
  * snake for the rest
 */
 
+
+/**
+ * struct Comparator{
+ * // operator overloading
+ * bool operator() (int a, int b) const{
+ * // sort in ascending orderretunr a < b;}
+ */
 struct Comparator{
     bool operator() (int a, int b) const{
         // sort in ascending order
